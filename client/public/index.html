@@ -9,6 +9,7 @@
       name="description"
       content="Web site created using create-react-app"
     />
+    <script src="jquery-3.6.4.min.js"></script>
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <!--
       manifest.json provides metadata used when your web app is installed on a
@@ -30,6 +31,11 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+    <script>
+      $(document).ready(function () {
+        alert("We use cookies");
+      });
+    </script>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.

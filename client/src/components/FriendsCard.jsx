@@ -28,7 +28,7 @@ const FriendsCard = ({friends}) => {
                                     {friend?.firstName} {friend?.lastName}
                                 </p>
                                 <span className='text-sm text-ascent-2'>
-                                    {friend?.profession ?? "No Profession"}
+                                    {friend?.set ?? "No Set"}
                                 </span>
                             </div>
                         </Link>

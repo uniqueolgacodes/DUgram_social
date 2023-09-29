@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import {LiaEditSolid} from 'react-icons/lia'
 import { NoProfile } from '../assets';
 import { updateProfile } from '../redux/userSlice';
-import { BsBriefcase, BsFacebook, BsInstagram, BsPersonFillAdd } from 'react-icons/bs';
+import { BsBriefcase, BsFacebook, BsFillPeopleFill, BsInstagram, BsPeople, BsPersonFillAdd } from 'react-icons/bs';
 import {FaTwitterSquare } from 'react-icons/fa'
 import { CiLocationOn} from "react-icons/ci"
 import moment from "moment";
@@ -28,7 +28,7 @@ const ProfileCard = ({user}) => {
                             <p className='text-lg font-medium text-ascent-1'>
                                 {user?.firstName} {user?.lastName}
                             </p>
-                            <span className='text-ascent-2'>{user?.profession ?? "No Profession"}</span>
+                            <span className='text-ascent-2'>{user?.set ?? "No Set"}</span>
                         </div>
                     </Link>
 
@@ -57,8 +57,8 @@ const ProfileCard = ({user}) => {
                         <span>{user?._location ?? "Add Location"}</span>
                     </div>
                     <div className='flex gap-2 items-center text-ascent-2'>
-                        <BsBriefcase className='text-lg text-ascent-1' />
-                        <span>{user?.profession ?? "Add Profession"}</span>
+                        <BsPeople className='text-lg text-ascent-1' />
+                        <span>{user?.set ?? "Add Set"}</span>
                     </div>
                 </div>    
                     <div className='w-full flex flex-col gap-2 py-4 border-b border-[#66666645]'>

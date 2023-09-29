@@ -1,9 +1,12 @@
+
+
 import { Outlet, Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { Home, Login, Profile, Register, ResetPassword } from "./pages";
 import { useSelector } from "react-redux";
 import { userReducer } from "./redux/userSlice";
 // import { ThemeProvider } from "styled-components";
 import { light, dark } from "./redux/theme";
+import { MyComponent } from "./components";
 <script src="http://192.168.56.1:8097"></script>
 
 function Layout() {
@@ -22,7 +25,9 @@ function App() {
   console.log(theme);
 
   return (
+    
     <div data-theme={theme} className="w-full min-h-[100vh]">
+      {/* <MyComponent/> */}
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />

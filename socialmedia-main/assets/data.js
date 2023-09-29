@@ -37,7 +37,7 @@ export const user = {
       updatedAt: "2023-08-21T06:46:26.798Z",
       __v: 8,
       location: "Mumbai, India",
-      profession: "Full-Stack Developer",
+      set: "Eagles",
     },
     {
       _id: "64df424b4a4c0d47b5369f65",
@@ -105,7 +105,7 @@ export const friends = [
     lastName: "Jackson",
     email: "james@gmail.com",
     location: "Mumbai, India",
-    profession: "Full-Stack Developer",
+    set: "Eagles",
   },
   {
     _id: "64df424b4a4c0d47b5369f65",
