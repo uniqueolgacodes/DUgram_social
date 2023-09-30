@@ -1,166 +1,239 @@
-import React, { useState } from 'react'
-import { useForm } from "react-hook-form";
-// const { useDispatch } = React.useContext(React.createContext);
-import { useDispatch } from "react-redux";
+// ALL IMPORTS
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { CustomButton, EditProfile, Loading, PostCard, TextInput, TopBar } from '../components';
+import { ProfileCard } from '../components';
+import { FriendsCard } from '../components';
+import { suggest, requests, posts } from "../assets/data";
+import { NoProfile } from '../assets';
 import { Link } from 'react-router-dom';
-import {TbSocial} from "react-icons/tb";
-import {BsShare} from "react-icons/bs";
-import {TextInput} from '../components';
-import {Loading} from '../components';
-import { CustomButton } from '../components';
-import { BgImage } from '../assets';
-import {AiOutlineInteraction} from "react-icons/ai";
-import {ImConnection} from "react-icons/im";
-// import { rootReducer } from '../redux/reducer';
-// import { userReducer } from "./redux/userSlice";
+import { BsFiletypeGif, BsPersonFillAdd } from 'react-icons/bs';
+import { BiImages, BiSolidVideo } from 'react-icons/bi';
+import Register from './Register';
+import { useForm } from 'react-hook-form';
 
-
-const Login = () => {
-  const {
-    register, handleSubmit, formState: { errors },
-  } = useForm({
-    mode: "onChange",
-  });
-
-  const onSubmit = async(data)=> {
-
-  }
-
-  const[errMsg, setErrMsg] = useState("");
-  const dispatch = useDispatch();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-
+// ALL FUNCTIONS AND CONSTANTS
+const Home = () => {
+  const { user, edit } = useSelector((state) => state.user);
+  const [friendRequest, setFriendRequest] = useState(requests);
+  const [suggestedFriends, setSuggestedFriends] = useState(suggest);
+  const {register, handleSubmit, formState : {errors}} = useForm();
+  const [errMsg, setErrMsg] = useState("");
+  const [file, setFile] = useState(null);
+  const [posting, setPosting] = useState(false);
+  const [loading, setLoading] = useState(false); 
+  const handlePostSubmit = async(data) => {}
+  
   return (
-    <div className='bg-bgColor w-full h-[100vh] flex items-center justify-center p-6'>
-        <div className='w-full md:w-2/3 h-fit lg:h-full 2xl:h-5/6 py-8 lg:py-0 flex bg-primary rounded-xl overflow-hidden shadow-xl'>
-          {/*LEFT */}
-          <div className='w-full lg:w-1/2 h-full p-10 2xl:px-20 flex flex-col justify-center'>
-
-            <div className='w-full flex gap-2 items-center mb-6'>
-                <div className='p-2 bg-[#065ad8] rounded text-white'>
-                  <TbSocial /> {/* This is for the logo of DUgram*/}
-                </div>
-                <span className='text-2xl text-[#065ad8] font-semibold'>DUgram</span> {/* This is for the name on the login page*/}
-            </div> {/* This is for the logo part of DUgram*/}
-
-
-            <p className='text-ascent-1 text-base font-semibold'>
-              Login to your account
-            </p>
-            <span className='text-sm mt-2 text-ascent-2'>Welcome back!</span>
+    <>
+      <div className='home w-full px-0 lg:px-10 pb-20 2xl:px-40 bg-bgColor lg:rounded-lg h-screen overflow-hidden'>
+      <TopBar />
+      <div className='w-full flex gap-2 lg:gap-4 pt-5 pb-10 h-full'>
+        {/* LEFT #olgacodes */}
+        <div className='hidden w-1/3 lg:w-1/4 h-full md:flex flex-col gap-6 overflow-y-auto'>
+          {/* Display user profile card */}
+          <ProfileCard user={user}/>
+          {/* Display user's friends */}
+          <FriendsCard friends={user?.friends}/>
+        </div>
         
-            <form className="py-8 flex flex-col gap-5" onSubmit={handleSubmit(onSubmit)}>
-
-              {/* This is for the emails #olgacodes */}
-              <TextInput 
-                name="email" placeholder="email@example.com" 
-                styles="w-full rounded-full" label="Email  Address" 
-                type="email"
-                register={
-                  register("email", {
-                    required: "Yo, we need that email",
-                  })
-                }
-                labelStyles="ml-2"
-                error={errors.email ? errors.email.message: ""}
+        {/* CENTER #olgacodes */}
+        <div className='flex-1 h-full px-4 flex flex-col gap-6 overflow-y-auto rounded-lg'>
+          {/* Form to post */}
+          <form
+            onSubmit={handleSubmit(handlePostSubmit)}
+            className='bg-primary px-4 rounded-lg'
+          >
+            <div className='w-full flex items-center gap-2 py-4 border-b border-[#66666645]'>
+              <img
+                src={user?.profileUrl ?? NoProfile}
+                alt={user?.firstName}
+                className='w-14 h-14 rounded-full object-cover'
               />
-
-              {/* This is for our passwords #olgacodes */}
-
-              <TextInput 
-                name="password" placeholder="Password" 
-                styles="w-full rounded-full" label="Password" 
-                type="password"
-                register={
-                  register("password", {
-                    required: "Where's you going? Password, please!",
-                  })
-                }
-                labelStyles="ml-2"
-                error={errors.password ? errors.password.message: ""}
-              />
-
-              {/* This is for our forgot passwords #olgacodes */}
-              <Link
-              to="/reset-password"
-              className="text-sm text-right text-blue font-semibold"
-              >
-                Click me! 'Cause you forgot your password
-              </Link>
-
-                {
-                  errMsg?.message && (
-                    <span className={`text-sm ${
-                      errMsg?.status === "failed" ? "text-[#f64949fe]" : "text-[#2ba150fe]"
+              <TextInput
+                styles='w-full rounded-full py-5'
+                placeholder='Just...express yourself...'
+                name='description'
+                register={register("description", {
+                  required: "Your wise words are needed here"
+                })}
+                error={errors.description ? errors.description.message : ''}
+               />
+            </div>
+            {errMsg?.message && (
+              <span role='alert'
+                    className={`text-sm ${
+                      errMsg?.status === "failed"
+                      ? "text-[#ff3e3e]"
+                      : "text-[#53c053]"
                     } mt-0.5`}>
-                      {errMsg?.message}
-                    </span>
-                  )}
 
-                {
-                  isSubmitting ? <Loading /> : <CustomButton 
-                    type="submit"
-                    containerStyles={`inline-flex justify-center rounded-md bg-blue px-8 py-3 py-3 text-sm font-medium text-white outline-none`}
-                    title="Let's Go!"
-                  />
-                }
+              {errMsg?.message }
 
-            </form>
+              </span>
+            )}
 
-            <p className='py-2 flex flex-row items-center'>
-                Don't have an account?
-                <Link 
-                  to="/register"
-                  className='text-[#065ad8] font-semibold ml-2 curor-pointer'
+            <div className='flex items-center justify-between py-4'>
+              {/* for image upload */}
+                <label htmlFor='imgUpload'
+                       className='flex items-center gap-1 text-base text-ascent-2 hover:text-ascent-1 cursor-pointer'
                 >
-                  Wanna get one?
-                </Link>
-                
-            </p>
-             
-          </div>
+                  <input type="file"
+                         onChange={(e) => setFile(e.target.files[0])}
+                         className='hidden'
+                         id ='imgUpload'
+                         data-max-size='5120'
+                         accept='.jpg, .png, .jpeg'
+                  />
+                  <BiImages />
+                  <span>Image</span>
+                </label>
+                    {/* for video upload */}
+                <label htmlFor='videoUpload'
+                       className='flex items-center gap-1 text-base text-ascent-2 hover:text-ascent-1 cursor-pointer'
+                >
+                  <input type="file"
+                         onChange={(e) => setFile(e.target.files[0])}
+                         className='hidden'
+                         id ='videoUpload'
+                         data-max-size='5120'
+                         accept='.mp4 .wav .mkv'
+                  />
+                  <BiSolidVideo />
+                  <span>Video</span>
+                </label>
+                    {/* for gif upload */}
+                <label htmlFor='vgifUpload'
+                       className='flex items-center gap-1 text-base text-ascent-2 hover:text-ascent-1 cursor-pointer'
+                >
+                  <input type="file"
+                         onChange={(e) => setFile(e.target.files[0])}
+                         className='hidden'
+                         id ='vgifUpload'
+                         data-max-size='5120'
+                         accept='.gif'
+                  />
+                  <BsFiletypeGif />
+                  <span>GIF</span>
+                </label>
+                     
+                     {/* post button */}
+                <div>
+                {posting ? (
+                  <Loading/>
+                ) : (
+                  <CustomButton
+                    type='submit'
+                    title='Post!'
+                    containerStyles='bg-[#0444a4] text-white py-1 px-6 rounded-full font-semibold text-sm'
+                   />
+                )}
+                </div>
+            </div>
 
-          {/* RIGHT*/}
-
-          <div className='hidden w-1/2 h-full lg:flex flex-col items-center justify-center bg-blue'>
-
-                <div className="relative w-full flex items-center justify-center">
+          </form>
+          
+          {loading ? (<Loading/>): posts?.length > 0 ? (posts?.map((post) => (
+              <PostCard key={post?._id} post={post} 
+              
+              user={user}
+              deletePost = {() => {}}
+              likePost = {() => {}}
+              />
+          ))): (
+            <div className='flex w-full h-full items-center justify-center'>
+              <p className='text-lg text-ascent-2'>No posts here </p>
+            </div>
+          )}
+        {/* <PostCard/> */}
+        </div>
+        
+        {/* RIGHT #olgacodes */}
+        <div className='hidden w-1/4 h-full lg:flex flex-col gap-8 overflow-y-auto '>
+          {/* FRIEND REQUESTS */}
+          <div className='w-full bg-primary shadow-sm rounded-lg px-6 py-5'>
+            {/* Display friend requests */}
+            <div className='flex items-center justify-between text-xl text-ascent-1 pb-2 border-b border-[#66666645]'>
+              <span>Stranger who wanna be friends</span>
+              <span>{friendRequest?.length}</span>
+            </div>
+            <div className='w-full flex flex-col gap-4 pt-4 '>
+              {/* Map through friend requests */}
+              {friendRequest?.map(({ _id, requestFrom: from }) => (
+                <div key={_id} className='flex items-center justify-between'>
+                  <Link to={"/profile/" + from._id} className="w-full flex gap-4 items-center cursor-pointer">
                     <img
-                      src={BgImage}
-                      alt='Bg Image'
-                      className='w-48 2xl:w-64 h-48 2xl:h-64 rounded-full object-cover'
+                      src={from?.profileUrl ?? NoProfile}
+                      alt={from?.firstName}
+                      className='w-10 h-10 object-cover rounded-full'
                     />
-
-                    <div className="absolute flex items-center gap-1 bg-white right-10 top-10 py-2 px-5 rounded-full">
-                      <BsShare size={14} />
-                      <span className='text-xs font-medium'>Share</span>
+                    <div className='flex-1 '>
+                      <p className='text-base font-medium text-ascent-1'>
+                        {from?.firstName} {from?.lastName}
+                      </p>
+                      <span className='text-sm text-ascent-2'>
+                        {from?.set ?? "No Set"}
+                      </span>
                     </div>
-
-                    <div className="absolute flex items-center gap-1 bg-white left-10 top-6 py-2 px-5 rounded-full">
-                      <ImConnection />
-                      <span className='text-xs font-medium'>Connect</span>
-                    </div>
-
-                    <div className="absolute flex items-center gap-1 bg-white left-12 bottom-6 py-2 px-5 rounded-full">
-                      <AiOutlineInteraction />
-                      <span className='text-xs font-medium'>Interact</span>
-                    </div>
+                  </Link>
+                  <div className=' flex gap-1 '>
+                    {/* Accept friend request button */}
+                    <CustomButton
+                      title="Ok!"
+                      containerStyles='bg-[#0444a4] text-xs text-white px-1.5 py-1 rounded-full'
+                    />
+                    {/* Reject friend request button */}
+                    <CustomButton
+                      title="Nah"
+                      containerStyles='border border-[#666] text-xs text-ascent-1 px-1.5 py-1 rounded-full'
+                    />
+                  </div>
                 </div>
-
-                <div className='mt-16 text-center'>
-                    <p className='text-white text-base'>
-                      Connect with friends, share & have fun!
-                    </p>
-                    <span className='text-sm text-white/80'>
-                      Connect, Share, and Shine: Your Social World Awaits!
-                    </span>
+              ))}
+            </div>
+          </div>
+          
+          {/* SUGGESTED FRIENDS */}
+          <div className='w-full bg-primary shadow-sm rounded-lg px-6 py-5'>
+            {/* Display suggested friends */}
+            <div className='flex items-center justify-between text-lg text-ascent-1 border-b border-[#66666645]'>
+              <span>We Suggest</span>
+            </div>
+            <div className='w-full flex flex-col gap-4 pt-4 '>
+              {/* Map through suggested friends */}
+              {suggestedFriends?.map((friend) => (
+                <div key={friend._id} className='flex items-center justify-between'>
+                  <Link to={"/profile/" + friend?._id} key={friend?._id} className="w-full flex gap-4 items-center cursor-pointer">
+                    <img
+                      src={friend?.profileUrl ?? NoProfile}
+                      alt={friend?.firstName}
+                      className='w-10 h-10 object-cover rounded-full'
+                    />
+                    <div className='flex-1'>
+                      <p className='text-base font-medium text-ascent-1'>
+                        {friend?.firstName} {friend?.lastName}
+                      </p>
+                      <span className='text-sm text-ascent-2'>
+                        {friend?.set ?? "No Set"}
+                      </span>
+                    </div>
+                  </Link>
+                  <div className='flex gap-1 '>
+                    {/* Add friend button */}
+                    <button className='bg-[#0444a430] text-sm text-white p-1 rounded' onClick={() => {}}>
+                      <BsPersonFillAdd size={20} className='text-[#0f52b6]' />
+                    </button>
+                  </div>
                 </div>
-
+              ))}
+            </div>
           </div>
         </div>
+      </div>
     </div>
-  )
+    { edit && <EditProfile/> }   
+    </>
+  );
 }
 
-export default Login
+export default Home;
