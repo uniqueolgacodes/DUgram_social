@@ -1,0 +1,202 @@
+ <!DOCTYPE html>
+<head>
+
+    <title>Email Verification</title>
+    <style>
+        /* Base styles for the card */
+        .card {
+            text-align: center;
+            padding: 20px;
+            border: 1px solid #ccc;
+            max-width: 300px;
+            margin: 0 auto;
+            margin-top: 100px;
+            border-radius: 10px;
+            background-color: #fff;
+            color: black;
+        }
+
+        /* Styles for status icons and messages */
+        .icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .success {
+            background-color: #4CAF50;
+            color: black;
+        }
+
+        .error {
+            background-color: #FF5733;
+            color: black;
+        }
+        .statusMessage{
+            color: black;
+        }
+
+        /* Style for the "Login" button */
+        .showBtn{
+            display: flex;
+            background-color: #4CAF50;
+            color: black;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        /* Hide the button when not needed */
+        .hideBtn{
+            display: none;
+        }
+    </style>
+    
+</head>
+<body>
+    <div class="card">
+        <div class="icon">
+            <span id="statusIcon" class=""></span>
+        </div>
+        <h1 id="statusMessage" class="" style="color: #333333;"></h1>
+         <!-- localhost:3000 will be replaced by the deployed URL  -->
+        <a href="http://localhost:3000/login" id="btn" class="">Click To Login</a>
+    </div>
+
+    <script>
+        
+//  Get the message parameter from the URL
+const urlParams = new URLSearchParams(window.location.search);
+const message = urlParams.get('message');
+console.log(message);
+const verStatus = urlParams.get('status');
+
+// Get the card, status icons and status message elements
+const card = document.querySelector('.card');
+const statusIcon = document.getElementById('statusIcon');
+const statusMessage = document.getElementById('statusMessage');
+const btn = document.getElementById("btn");
+
+// Display appropriate content and set background color based on the message parameter
+if (verStatus === 'success') {
+    statusIcon.innerHTML = '✔️';
+    statusMessage.textContent = message;
+    card.classList.add('success');
+    statusIcon.classList.add('success');
+    statusMessage.classList.add('success');
+    btn.classList.add('showBtn');
+} else if (verStatus === 'error') {
+    statusIcon.innerHTML = '❌';
+    statusMessage.textContent = message;
+    card.classList.add('error');
+    statusIcon.classList.add('error');
+    statusMessage.classList.add('error');
+    btn.classList.add('hideBtn');
+} else {
+    statusIcon.innerHTML = '❓';
+    statusMessage.textContent = message;
+    card.classList.add('error');
+    statusIcon.classList.add('error');
+    statusMessage.classList.add('error');
+    btn.classList.add('hideBtn');
+}
+
+    </script>
+   
+
+   
+</body>
+</html> 
+
+<!-- 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Verification</title>
+    <style>
+        /* Base styles for the card */
+        .card {
+            text-align: center;
+            padding: 20px;
+            border: 1px solid #ccc;
+            max-width: 300px;
+            margin: 0 auto;
+            margin-top: 100px;
+            border-radius: 10px;
+            background-color: #fff;
+        }
+
+        /* Styles for status icons and messages */
+        .icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .success {
+            background-color: #4CAF50;
+            color: #fff;
+        }
+
+        .error {
+            background-color: #cc2702;
+            color: #fff;
+        }
+
+        /* Style for the "Login" button */
+        .showBtn{
+            display: inline-block;
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        /* Hide the button when not needed */
+        .hideBtn {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="icon">
+            <span id="statusIcon"></span>
+        </div>
+        <span id="statusMessage"></span>
+        
+        <a href="http://localhost:3000/login" id="btn">Login</a>
+    </div>
+    <script>
+        // Get the message parameter from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const message = urlParams.get('message');
+        const status = urlParams.get('status');
+
+        // Get the card, status icons and status message elements
+        const card = document.querySelector('.card');
+        const statusIcon = document.getElementById('statusIcon');
+        const statusMessage = document.getElementById('statusMessage');
+        const btn = document.getElementById("btn");
+
+        // Display appropriate content and set background color based on the message parameter
+        if (status === 'success' || status === 'error') {
+            statusIcon.innerHTML = status === 'success' ? '✔️' : '❌';
+            card.classList.add(status);
+            statusIcon.classList.add(status);
+            statusMessage.classList.add(status);
+            btn.classList.add(status === 'success' ? 'showBtn' : 'hideBtn');
+        } else {
+            statusIcon.innerHTML = 'ERROR';
+            card.classList.add('error');
+            statusIcon.classList.add('error');
+            statusMessage.classList.add('error');
+            btn.classList.add('hideBtn');
+        }
+    </script>
+</body>
+</html> -->
+

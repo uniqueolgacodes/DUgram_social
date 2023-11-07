@@ -1,6 +1,6 @@
 import mongoose, {Schema} from "mongoose";
 
-const emailVerification = Schema({
+const emailVerificationSchema = Schema({
     userId: String,
     token: String,
     createdAt: Date,
