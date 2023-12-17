@@ -3,7 +3,7 @@
 const errorMiddleware = (err, req, res, next) => {
     const defaultError = {
         statusCode: 404,
-        success: "failed",
+        status: "failed",
         message: err,
     };
     if (err?.name === "ValidationError") {
@@ -21,7 +21,7 @@ const errorMiddleware = (err, req, res, next) => {
     }
 
     res.status(defaultError.statusCode).json({
-        success:defaultError.success,
+        status:defaultError.status,
         message: defaultError.message,
     });
 };
