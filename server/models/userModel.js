@@ -27,7 +27,7 @@ const userSchema = new mongoose.Schema(
         profileUrl:{
             type: String
         },
-        profession:{
+        set:{
             type: String
         },
         friends:[{

@@ -318,3 +318,42 @@ export const acceptRequest = async (req, res, next ) => {
     })
     }
 };
+
+export const profileViews = async (req, res, next )=> {
+  try {
+    const {userId} = req.body.user;
+    const {id} = req.body;
+    const user = await Users.findById(id);
+    user.views.push(userId);
+    await user.save();
+    res.status(201).json({
+      success: true,
+      message: "Successful",
+    });
+  }catch(error){
+    console.log(error);
+    res.status(500).json({
+      message: "auth error",
+      success: false,
+      error: error.message,
+    });
+  }
+};
+
+export const suggestedFriends = async (req, res) => {
+  try{
+    const { userId } = req.body.user;
+    let queryObject = {};
+    queryObject._id = { $ne: userId};
+    queryObject.friends = { $nin: userId };
+    let queryResult = Users.find(queryObject).limit(15).select("firstName lastName profileUrl set -password");
+    const suggestedFriends = await queryResult;
+    res.status(200).json({
+      success: true,
+      data: suggestedFriends,
+    });
+  }catch(error){
+    console.log(error);
+    res.status(400).json({message:error.message})
+  }
+}

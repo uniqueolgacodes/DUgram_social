@@ -1,6 +1,6 @@
 import express from "express";
 import path from "path";
-import {acceptRequest, changePassword, friendRequest, getFriendRequest, requestPasswordReset, resetPassword, verifyEmail} from "../controllers/userController.js";
+import {acceptRequest, changePassword, friendRequest, getFriendRequest, profileViews, requestPasswordReset, resetPassword, suggestedFriends, verifyEmail} from "../controllers/userController.js";
 import userAuth from "../middleware/authMiddleware.js";
 
 import {getUser, updateUser} from "../controllers/userController.js";
@@ -26,10 +26,10 @@ router.post("/get-friend-request", userAuth, getFriendRequest);
 router.post("/accept-request", userAuth, acceptRequest);
 
 //view profile
-// router.post("/profile-view", userAuth, profileViews);
+router.post("/profile-view", userAuth, profileViews);
 
-// //suggested friends
-// router.post("/suggested-friends", userAuth, suggestedFriends);
+//suggested friends
+router.post("/suggested-friends", userAuth, suggestedFriends);
 
 router.get("/verified", (_req, res) => {
     res.sendFile(path.join(__dirname, "./views/build", "index.html"));
